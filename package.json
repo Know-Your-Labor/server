@@ -4,7 +4,7 @@
   "description": "",
   "main": "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node main.js"
   },
   "repository": {
     "type": "git",
@@ -15,5 +15,11 @@
   "bugs": {
     "url": "https://github.com/Know-Your-Labor/server/issues"
   },
-  "homepage": "https://github.com/Know-Your-Labor/server#readme"
+  "homepage": "https://github.com/Know-Your-Labor/server#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.1",
+    "express-rate-limit": "^6.5.1",
+    "swagger-ui-express": "^4.5.0"
+  }
 }

@@ -2,9 +2,13 @@ require('dotenv').config();
 const express = require('express')
 const app = express();
 const cors = require("cors");
+const rateLimit = require('express-rate-limit')
 var http = require('http').Server(app);
-var package = require('../package.json');
+var package = require('./package.json');
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./swagger.json');
 
+var port = process.env.PORT? process.env.PORT: 3000
 
 const limiter = rateLimit({
 	windowMs: 15 * 60 * 1000, // 15 minutes
@@ -22,7 +26,10 @@ app.use((req,res,next)=>{
     res.setHeader('Access-Control-Allow-Methods','Content-Type','Authorization');
     cors();
     next(); 
-  })
+})
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
 
 app.get("/detail", (req, res) => {
     // req.query.id
