@@ -4,9 +4,10 @@ const app = express();
 const cors = require("cors");
 const rateLimit = require('express-rate-limit')
 var http = require('http').Server(app);
-var package = require('./package.json');
+var package = require('../package.json');
 const swaggerUi = require('swagger-ui-express');
-const swaggerDocument = require('./swagger.json');
+const swaggerDocument = require('../swagger.json');
+const crud = require('./crud')
 
 var port = process.env.PORT? process.env.PORT: 3000
 
@@ -32,11 +33,11 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 
 app.get("/detail", (req, res) => {
-    // req.query.id
+    return crud.get_brand(req.query.id)
 });
 
 app.get("/list", (req, res) => {
-    // req.query.page
+    return crud.get_brands(req.query.page)
 });
 
 // start server

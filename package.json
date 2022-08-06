@@ -20,6 +20,7 @@
     "cors": "^2.8.5",
     "dotenv": "^16.0.1",
     "express-rate-limit": "^6.5.1",
+    "mysql": "^2.18.1",
     "swagger-ui-express": "^4.5.0"
   }
 }
