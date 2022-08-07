@@ -17,20 +17,20 @@ module.exports = {
     get_brand,
 }
 
-function query(sql, callback) {
+function query(sql, params, callback) {
     while(!connected) {/* do nothing */}
 
-    con.query(sql, ( (err, result) => {
+    con.query(sql, params, ( (err, result) => {
         err ? callback(err) : callback(result);
     }));
 }
 
-function get_brands(page, callback) {
-    let sql = "SELECT * FROM know_your_labor.brand LIMIT 10;";
-    query(sql, callback);
+function get_brands(page, filter, callback) {
+    let sql = "SELECT distinct * FROM know_your_labor.brand WHERE name LIKE ? LIMIT 10;";
+    query(sql, ['%'+filter+'%'], callback);
 }
 
 function get_brand(id, callback) {
-    let sql = "SELECT * FROM know_your_labor.brand WHERE id=" + id;
-    query(sql, callback);
+    let sql = "SELECT * FROM know_your_labor.brand WHERE id=? LIMIT 1;";
+    query(sql, [id], callback);
 }

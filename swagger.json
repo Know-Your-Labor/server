@@ -31,7 +31,16 @@
                 "type": "integer"
               },
               "format": "int32"
-            }
+            }, {
+                "name": "filter",
+                "in": "query",
+                "description": "text filter",
+                "required": true,
+                "items": {
+                  "type": "integer"
+                },
+                "format": "int32"
+              }
           ],
           "produces": [
             "application/json"
@@ -67,10 +76,16 @@
             "type": "integer",
             "format": "int64"
           },
+          "url": {
+            "type": "string"
+          },
           "name": {
             "type": "string"
           },
-          "tag": {
+          "section1": {
+            "type": "string"
+          },
+          "section2": {
             "type": "string"
           }
         }
