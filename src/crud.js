@@ -16,6 +16,7 @@ con.connect(function(err) {
 module.exports = {
     get_brands,
     get_brand,
+    get_brand_controversies
 }
 
 function query(sql, params, callback) {
@@ -49,5 +50,15 @@ function get_brands(page, filter, callback) {
 
 function get_brand(id, callback) {
     let sql = "SELECT * FROM brand WHERE id=? LIMIT 1;";
+    query(sql, [id], callback);
+}
+
+function get_brand_controversies(id, callback) {
+    let sql = `
+        SELECT *
+        FROM brand_controversy
+        LEFT JOIN controversy ON controversy.id = brand_controversy.controversy_id
+        WHERE brand_controversy.brand_id = ?;
+    `;
     query(sql, [id], callback);
 }

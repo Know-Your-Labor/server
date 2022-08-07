@@ -38,6 +38,14 @@ app.get("/detail", (req, res, next) => {
     });
 });
 
+app.get("/controversies", (req, res, next) => {
+    return crud.get_brand_controversies(req.query.id, (result) => {
+        res.send(result);
+        next();
+    });
+});
+
+
 app.get("/list", (req, res, next) => {
     ret = crud.get_brands(req.query.page, req.query.filter, (result) => {
         res.send(result);
