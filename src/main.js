@@ -39,7 +39,6 @@ app.get("/detail", (req, res, next) => {
 });
 
 app.get("/list", (req, res, next) => {
-    console.log("new list request: page=" + req.query.page);
     ret = crud.get_brands(req.query.page, req.query.filter, (result) => {
         res.send(result);
         next();

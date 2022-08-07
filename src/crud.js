@@ -3,6 +3,7 @@ var mysql = require('mysql');
 var con = mysql.createConnection({
   host: "localhost",
   user: "root",
+  database: "know_your_labor"
 });
 
 var connected = false;
@@ -26,11 +27,27 @@ function query(sql, params, callback) {
 }
 
 function get_brands(page, filter, callback) {
-    let sql = "SELECT distinct * FROM know_your_labor.brand WHERE name LIKE ? LIMIT 10;";
+    let sql = `
+        SELECT
+            brand.id,
+            brand.name,
+            brand.url,
+            COUNT(controversy.id) AS total_controversies,
+            SUM(CASE WHEN controversy.slavery THEN 1 ELSE 0 END) AS slavey_controversies,
+            SUM(CASE WHEN controversy.child_labor THEN 1 ELSE 0 END) AS child_labor_controversies,
+            SUM(CASE WHEN controversy.strike THEN 1 ELSE 0 END) AS strike_controversies,
+            SUM(CASE WHEN controversy.environmental THEN 1 ELSE 0 END) AS environmental_controversies
+        FROM brand
+        LEFT JOIN brand_controversy ON brand_controversy.brand_id = brand.id
+        LEFT JOIN controversy ON controversy.id = brand_controversy.controversy_id
+        WHERE brand.name LIKE ?
+        GROUP BY brand.id, brand.name, brand.url
+        LIMIT 10;
+    `;
     query(sql, ['%'+filter+'%'], callback);
 }
 
 function get_brand(id, callback) {
-    let sql = "SELECT * FROM know_your_labor.brand WHERE id=? LIMIT 1;";
+    let sql = "SELECT * FROM brand WHERE id=? LIMIT 1;";
     query(sql, [id], callback);
 }
