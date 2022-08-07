@@ -31,13 +31,19 @@ app.use((req,res,next)=>{
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-
-app.get("/detail", (req, res) => {
-    return crud.get_brand(req.query.id)
+app.get("/detail", (req, res, next) => {
+    return crud.get_brand(req.query.id, (result) => {
+        res.send(result);
+        next();
+    });
 });
 
-app.get("/list", (req, res) => {
-    return crud.get_brands(req.query.page)
+app.get("/list", (req, res, next) => {
+    console.log("new list request: page=" + req.query.page);
+    ret = crud.get_brands(req.query.page, (result) => {
+        res.send(result);
+        next();
+    });
 });
 
 // start server

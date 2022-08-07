@@ -21,19 +21,37 @@
       "/list": {
         "get": {
           "description": "Returns all brands",
+          "parameters": [
+            {
+              "name": "page",
+              "in": "query",
+              "description": "page number",
+              "required": true,
+              "items": {
+                "type": "integer"
+              },
+              "format": "int32"
+            }
+          ],
           "produces": [
             "application/json"
           ],
           "responses": {
             "200": {
-              "description": "A list of pets.",
+              "description": "A list of brands.",
               "schema": {
                 "type": "array",
                 "items": {
                   "$ref": "#/definitions/Brand"
                 }
               }
-            }
+            },
+            "default": {
+                "description": "unexpected error",
+                "schema": {
+                  "$ref": "#/definitions/Error"
+                }
+              }
           }
         }
       }
@@ -53,6 +71,22 @@
             "type": "string"
           },
           "tag": {
+            "type": "string"
+          }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "required": [
+          "code",
+          "message"
+        ],
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
             "type": "string"
           }
         }

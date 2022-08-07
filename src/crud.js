@@ -5,9 +5,11 @@ var con = mysql.createConnection({
   user: "root",
 });
 
+var connected = false;
 con.connect(function(err) {
-  if (err) throw err;
-  console.log("Connected!");
+    if (err) throw err;
+    console.log("Connected to db");
+    connected = true;
 });
 
 module.exports = {
@@ -15,20 +17,20 @@ module.exports = {
     get_brand,
 }
 
-function get_brands(page) {
-    let sql = "SELECT * FROM know_your_labor.brand LIMIT 10";
+function query(sql, callback) {
+    while(!connected) {/* do nothing */}
 
-    return con.query(sql, function (err, result) {
-        if (err) throw err;
-        return result
-    });
+    con.query(sql, ( (err, result) => {
+        err ? callback(err) : callback(result);
+    }));
 }
 
-function get_brand(id) {
-    let sql = "SELECT * FROM know_your_labor.brand WHERE id=" + id;
+function get_brands(page, callback) {
+    let sql = "SELECT * FROM know_your_labor.brand LIMIT 10;";
+    query(sql, callback);
+}
 
-    return con.query(sql, function (err, result) {
-        if (err) throw err;
-        return result
-    });
+function get_brand(id, callback) {
+    let sql = "SELECT * FROM know_your_labor.brand WHERE id=" + id;
+    query(sql, callback);
 }
